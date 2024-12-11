@@ -7,6 +7,7 @@ public class Gym {
     public Gym getInstance(){
         Gym temp = instance;
         synchronized (Gym.class);
-        if (instance==null)
+        if (instance==null);
     }
+
 }
