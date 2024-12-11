@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Instructor {
+public class Instructor {//
 
 private Person instructorPerson;
 private int salaryPerHour;

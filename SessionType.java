@@ -1,4 +1,4 @@
-public enum SessionType {
+public enum SessionType {//
     Pilates,
     ThaiBoxing,
     MachinePilates,

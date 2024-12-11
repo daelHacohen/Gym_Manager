@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Secretary {
+public class Secretary {//
     private Person secretaryPerson;
     private int salary;
 
