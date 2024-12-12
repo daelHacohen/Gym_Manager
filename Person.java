@@ -1,3 +1,7 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class Person {//
     private String name;
     private int balance;
@@ -26,6 +30,13 @@ public class Person {//
     public String getDate_of_birth() {
         return date_of_birth;
     }
+    public int getAge() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate birthDate = LocalDate.parse(this.date_of_birth, formatter);
+        LocalDate currentDate = LocalDate.now();
+        return (int) ChronoUnit.YEARS.between(birthDate, currentDate);
+    }
+
 
 
 

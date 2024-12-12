@@ -18,4 +18,7 @@ public class Secretary {//
         Instructor instructor = new Instructor(p, salary, sessionQualified);
         return instructor;
     }
+    public Session addSession(){
+        return null;
+    }
 }
