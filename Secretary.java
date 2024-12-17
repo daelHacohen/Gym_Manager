@@ -23,7 +23,20 @@ public class Secretary {//
         Instructor instructor = new Instructor(p, salary, sessionQualified);
         return instructor;
     }
-    public Session addSession(){
+
+    public void registerClientToLesson(Client c, Session s) {
+
+    }
+
+    public void unregisterClient(Client c) {
+
+    }
+
+    public Session addSession(SessionType sessionType, String str, ForumType forumType, Instructor instructor) {
         return null;
+    }
+
+    public void paySalaries() {
+        secretaryPerson.setBalance(secretaryPerson.getBalance()+salary);
     }
 }

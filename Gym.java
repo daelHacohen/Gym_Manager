@@ -1,4 +1,4 @@
-public class Gym {//
+public class Gym {
     private static Gym instance;
     private Secretary gymSecretary;
     private String gymName;

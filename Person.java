@@ -37,8 +37,7 @@ public class Person {//
         return (int) ChronoUnit.YEARS.between(birthDate, currentDate);
     }
 
-
-
-
-
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 }
