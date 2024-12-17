@@ -8,9 +8,14 @@ public class Secretary {//
         this.secretaryPerson = secretaryPerson;
         this.salary = salary;
     }
+/**נראה לי ככה אמור להיות השימוש בפקטורי בפונ' הזאת*/
+    public Client registerClient(Person person) {
+        ClientFactory clientFactory = new ClientFactory();
+        Client newClient = clientFactory.createClient(person);
 
-    public Client registerClient(Person person){
-        Client client = new Client(person);
+        return newClient;
+
+          //  Client client = new Client(person);
     }
 
 
