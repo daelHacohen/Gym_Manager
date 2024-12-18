@@ -3,24 +3,29 @@ import java.util.ArrayList;
 public class Secretary {//
     private Person secretaryPerson;
     private int salary;
+    private ArrayList<Client> gymClientList;
+    private ArrayList<Instructor> gymInstructorList;
 
     public Secretary(Person secretaryPerson, int salary) {
         this.secretaryPerson = secretaryPerson;
         this.salary = salary;
+        gymClientList =new ArrayList<>();
+        gymInstructorList =new ArrayList<>();
     }
-/**נראה לי ככה אמור להיות השימוש בפקטורי בפונ' הזאת*/
-    public Client registerClient(Person person) {
-        ClientFactory clientFactory = new ClientFactory();
-        Client newClient = clientFactory.createClient(person);
 
+    public Client registerClient(Person person) throws InvalidAgeException {
+        validateAge(person.getAge());
+        Client newClient =new Client(person);
+        gymClientList.add(newClient);
+//        ClientFactory clientFactory = new ClientFactory();
+//        Client newClient = clientFactory.createClient(person);
         return newClient;
-
-          //  Client client = new Client(person);
     }
 
 
     public Instructor hireInstructor(Person p, int salary, ArrayList<SessionType>sessionQualified ) {
         Instructor instructor = new Instructor(p, salary, sessionQualified);
+        gymInstructorList.add(instructor);
         return instructor;
     }
 
@@ -29,6 +34,10 @@ public class Secretary {//
     }
 
     public void unregisterClient(Client c) {
+        for (int i = 0; i < gymClientList.size(); i++) {
+            if (c==gymClientList.get(i))gymClientList.remove(i);
+
+        }
 
     }
 
@@ -39,4 +48,10 @@ public class Secretary {//
     public void paySalaries() {
         secretaryPerson.setBalance(secretaryPerson.getBalance()+salary);
     }
-}
+public static void validateAge(int age) throws InvalidAgeException {
+    if (age < 18) {
+        throw new InvalidAgeException("Age must be 18 or older.");
+
+        }
+    }
+    }
