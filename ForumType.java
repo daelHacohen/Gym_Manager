@@ -1,4 +1,4 @@
-public enum ForumType {
+public enum ForumType {//
     Male,
     Female,
     Seniors,

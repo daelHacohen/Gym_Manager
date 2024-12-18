@@ -1,4 +1,4 @@
-public class Session {
+public class Session {//
     private SessionType currenySesionType;
     private String dateAndHour;
     private ForumType currentForumType;

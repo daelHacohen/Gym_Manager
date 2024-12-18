@@ -1,4 +1,4 @@
-public class ClientFactory {
+public class ClientFactory {//
 
     public static Client createClient(Person person) throws InvalidAgeException {
         // בדיקת גיל
