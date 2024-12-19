@@ -12,6 +12,18 @@ private ArrayList<SessionType> sessionQualified;
         this.salaryPerHour = salaryPerHour;
         this.sessionQualified = sessionQualified;
     }
+
+    public Person getInstructorPerson() {
+        return instructorPerson;
+    }
+
+    public int getSalaryPerHour() {
+        return salaryPerHour;
+    }
+
+    public ArrayList<SessionType> getSessionQualified() {
+        return sessionQualified;
+    }
 }
 
 

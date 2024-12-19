@@ -9,6 +9,15 @@ public class Client {
     public String getName() {
         return person.getName();
     }
+
+    public void setClient(Person person) {
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
 }
 
-}
+
+
