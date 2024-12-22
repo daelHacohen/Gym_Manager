@@ -21,7 +21,12 @@ public void setName(String gym_Name){
         gymName = gym_Name;
 }
 public void setSecretary(Person p, int salary){
-        gymSecretary = new Secretary(p, salary);
+       if (gymSecretary==null){gymSecretary = new Secretary(p, salary);
+       }else {
+           gymSecretary.setSecretaryPerson(p);
+            gymSecretary.setSalary(salary);
+       }
+        gymSecretary.addGymActions("A new secretary has started working at the gym: "+p.getName());
 
 }
 public Secretary getSecretary(){

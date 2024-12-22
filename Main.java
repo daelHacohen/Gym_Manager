@@ -1,12 +1,9 @@
-import gym.Exception.*;
-import gym.customers.*;
-import gym.management.*;
-import gym.management.Sessions.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Main {//
+public class Main {
     public static void main(String[] args) throws InstructorNotQualifiedException, DuplicateClientException, InvalidAgeException, ClientNotRegisteredException {
         Person p1 = new Person("David", 500, Gender.Male, "20-02-1978");
         Person p2 = new Person("Nofar", 1200, Gender.Female, "03-07-1998");
