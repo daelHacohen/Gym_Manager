@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Main {
+public class Main {//
     public static void main(String[] args) throws InstructorNotQualifiedException, DuplicateClientException, InvalidAgeException, ClientNotRegisteredException {
         Person p1 = new Person("David", 500, Gender.Male, "20-02-1978");
         Person p2 = new Person("Nofar", 1200, Gender.Female, "03-07-1998");
@@ -85,18 +85,18 @@ public class Main {
         gymSecretary.registerClientToLesson(c7, s5);
 
 
-//        try{
-//            gymSecretary.registerClientToLesson(c1,s1);
-//        } catch (DuplicateClientException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//         gymSecretary.unregisterClient(c2);
-//        try {
-//            gymSecretary.registerClientToLesson(c2, s3);
-//        } catch (ClientNotRegisteredException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try{
+            gymSecretary.registerClientToLesson(c1,s1);
+        } catch (DuplicateClientException e) {
+            System.out.println(e.getMessage());
+        }
+
+         gymSecretary.unregisterClient(c2);
+        try {
+            gymSecretary.registerClientToLesson(c2, s3);
+        } catch (ClientNotRegisteredException e) {
+            System.out.println(e.getMessage());
+        }
 
         gymSecretary.notify(s4, "The instructor will be a few minutes late for the session");
         gymSecretary.notify("01-01-2025", "Heavy traffic reported around the gym today. Plan ahead to avoid missing your session!");
