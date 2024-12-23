@@ -1,4 +1,7 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
     public class Secretary {
         private Person secretaryPerson;
@@ -69,12 +72,13 @@ import java.util.ArrayList;
                addGymActions("Failed registration: No available spots for session");
                 return;
             }
+
             findIfDuplicateClient(c,s.getListOfClientsInCurrentClass());//זורק שגיאה אם הלקוח כבר רשום לשיעור הנוכחי
             findIfClientNotRegistered(c,gymClientList);// זורק שגיאה אם הלקוח כבר לא רשום כלקוח
             c.getPerson().setBalance(c.getPerson().getBalance()-s.getPrice());//לוקח כסף מהלקוח עבור השיעור
             gymBalanc = gymBalanc+s.getPrice();//מכניס לחשבון של החדר כושר את הכסף עבור השיעור
             s.getListOfClientsInCurrentClass().add(c);//מוסיף את הלקוח לשיעור
-            addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+s.sessionType+" on "+s.dateAndHour+" for price: "+s.getPrice());
+            addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+s.sessionType+" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
         }
         public  boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
@@ -92,6 +96,8 @@ import java.util.ArrayList;
             }
             return false;
         }
+
+
 
 
     public void unregisterClient(Client c) throws ClientNotRegisteredException {
@@ -120,7 +126,7 @@ import java.util.ArrayList;
         findIfQualified(instructor.getSessionQualified(),sessionType);
         Session newsession = SessionFactory.createSession(sessionType,dateAndHour,forumType,instructor);
         sessionList.add(newsession);
-        addGymActions("Created new session: "+newsession.sessionType+" on "+newsession.dateAndHour+" with instructor: "+newsession.thisSessionInstructor.getInstructorPerson().getName());
+        addGymActions("Created new session: "+newsession.sessionType+" on "+newsession.getFormattedDateTime()+" with instructor: "+newsession.thisSessionInstructor.getInstructorPerson().getName());
         return newsession;
     }
 
@@ -149,14 +155,34 @@ import java.util.ArrayList;
        for (Client client:s.getListOfClientsInCurrentClass()){
            client.update(messege);
        }
+           addGymActions("A message was sent to everyone registered for session " + s.sessionType + " on " +s.getFormattedDateTime() + " : " + messege );
     }
-        public void notify (String specificDay, String messege){//הודעות לרשומים לשיעורים של יום ספציפי
+        public void notify(String specificDay, String message) {
+            // הגדרת פורמטים
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+            // המרת specificDay לפורמט תואם (yyyy-MM-dd)
+            LocalDate formattedSpecificDay = LocalDate.parse(specificDay, inputFormatter);
+
+            for (Session s : sessionList) {
+                // המרת התאריך של השיעור לפורמט LocalDate
+                LocalDate sessionDate = LocalDate.parse(s.getFormattedDate(), outputFormatter);
+
+                if (sessionDate.equals(formattedSpecificDay)) { // השוואת התאריכים
+                    for (Client client : s.getListOfClientsInCurrentClass()) {
+                        client.update(message); // שליחת הודעה ללקוחות
+                    }
+
+                    addGymActions("A message was sent to everyone registered for a session on " + sessionDate + " : " + message);
+                }
+            }
         }
         public void notify (String messege){//הודעות לכלל לקוחות המכון
         for (Client client : gymClientList){
             client.update(messege);
         }
+            addGymActions(messege);
         }
 
         public void printActions() {
