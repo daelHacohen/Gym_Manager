@@ -42,7 +42,7 @@ import java.time.format.DateTimeFormatter;
         public void findIfDuplicateClient(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
-//                    throw new DuplicateClientException("Error: The client is already registered");
+                    throw new DuplicateClientException("Error: The client is already registered");
                 }
             }
         }
@@ -61,6 +61,14 @@ import java.time.format.DateTimeFormatter;
         }
         public void registerClientToLesson(Client c, Session s) throws DuplicateClientException, ClientNotRegisteredException {// צריך להוסיף גם בדיקה של האם מועד השיעור חלף או לא.
            if (!checkIfTheSameSecretary())return;
+            if (!findIfForumTypeIsValid(s.getForumType(),c.getPerson().getGender(),c.getPerson().getAge())){//בודק האם הסוג פורום של השיעור מתאים ללקוח
+                return;
+            }
+            if (LocalDateTime.parse(s.getFormattedDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).isBefore(LocalDateTime.now())) {
+                addGymActions("Failed registration: Session is not in the future");
+                return;
+            }
+
             if (c.getPerson().getBalance()<s.getPrice()){//בודק האם הללקוח יש מספיק כסף בשביל לשלם לשיעור
               addGymActions("Failed registration: Client doesn't have enough balance");
                 return;
@@ -73,8 +81,8 @@ import java.time.format.DateTimeFormatter;
                 return;
             }
 
-            findIfDuplicateClient(c,s.getListOfClientsInCurrentClass());//זורק שגיאה אם הלקוח כבר רשום לשיעור הנוכחי
-            findIfClientNotRegistered(c,gymClientList);// זורק שגיאה אם הלקוח כבר לא רשום כלקוח
+            findIfDuplicateClientToLesson(c,s.getListOfClientsInCurrentClass());//זורק שגיאה אם הלקוח כבר רשום לשיעור הנוכחי
+            findIfClientNotRegisteredToLesson(c,gymClientList);// זורק שגיאה אם הלקוח כבר לא רשום כלקוח
             c.getPerson().setBalance(c.getPerson().getBalance()-s.getPrice());//לוקח כסף מהלקוח עבור השיעור
             gymBalanc = gymBalanc+s.getPrice();//מכניס לחשבון של החדר כושר את הכסף עבור השיעור
             s.getListOfClientsInCurrentClass().add(c);//מוסיף את הלקוח לשיעור
@@ -83,14 +91,24 @@ import java.time.format.DateTimeFormatter;
         public  boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
                 case Male:
-                   if (gender==Gender.Male)return true;
-                   addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                   if (gender.equals(Gender.Male)) {
+                       return true;
+                   }else {
+                       addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                       return false;
+                   }
                 case Seniors:
-                    if (age>=65) return true;
-                    addGymActions("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+                    if (age>=65) {return true;
+                    }else {
+                        addGymActions("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+                        return false;
+                    }
                 case Female:
-                    if (gender==Gender.Female)return true;
-                    addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                    if (gender.equals(Gender.Female)){return true;
+                    }else {
+                        addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                        return false;
+                    }
                 case All:
                    return true;
             }
@@ -131,7 +149,9 @@ import java.time.format.DateTimeFormatter;
     }
 
     public void paySalaries() {
-        secretaryPerson.setBalance(secretaryPerson.getBalance()+salary);
+
+        secretaryPerson.setBalance(secretaryPerson.getBalance()+getSalary());
+        gymBalanc-=this.getSalary();
     }
     public static void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
@@ -193,6 +213,30 @@ import java.time.format.DateTimeFormatter;
         }
         public void addGymActions(String action){
             gymActions.add(action);
+        }
+
+        public Person getPerson() {
+            return secretaryPerson;
+        }
+
+        public int getSalary() {
+            return salary;
+        }
+
+        public int getGymBalanc() {
+            return gymBalanc;
+        }
+
+        public ArrayList<Client> getGymClientList() {
+            return gymClientList;
+        }
+
+        public ArrayList<Instructor> getGymInstructorList() {
+            return gymInstructorList;
+        }
+
+        public ArrayList<Session> getSessionList() {
+            return sessionList;
         }
     }
 
