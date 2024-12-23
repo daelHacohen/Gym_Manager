@@ -17,6 +17,7 @@ public class Gym {//
         }
         return instance;
     }
+
 public void setName(String gym_Name){
         gymName = gym_Name;
 }

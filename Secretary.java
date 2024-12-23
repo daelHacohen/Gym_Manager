@@ -47,6 +47,14 @@ import java.time.format.DateTimeFormatter;
             }
         }
 
+        public void findIfDuplicateClientToLesson(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
+            for (int i = 0; i < clients.size(); i++) {
+                if (clients.get(i).equals(clientToComper)){
+                    throw new DuplicateClientException("Error: The client is already registered for this lesson");
+                }
+            }
+        }
+
         public Instructor hireInstructor(Person p, int salary, ArrayList<SessionType>sessionQualified ) {
             Instructor instructor = new Instructor(p, salary, sessionQualified);
             gymInstructorList.add(instructor);
@@ -73,13 +81,13 @@ import java.time.format.DateTimeFormatter;
               addGymActions("Failed registration: Client doesn't have enough balance");
                 return;
             }
-            if (!findIfForumTypeIsValid(s.getForumType(),c.getPerson().getGender(),c.getPerson().getAge())){//בודק האם הסוג פורום של השיעור מתאים ללקוח
-                return;
-            }
+
             if (s.getListOfClientsInCurrentClass().size()>=s.getNumber_of_people_in_the_class()){//בודק האם יש מקום פנוי בשיעור הנוכחי
                addGymActions("Failed registration: No available spots for session");
                 return;
             }
+
+
 
             findIfDuplicateClientToLesson(c,s.getListOfClientsInCurrentClass());//זורק שגיאה אם הלקוח כבר רשום לשיעור הנוכחי
             findIfClientNotRegisteredToLesson(c,gymClientList);// זורק שגיאה אם הלקוח כבר לא רשום כלקוח
@@ -124,8 +132,7 @@ import java.time.format.DateTimeFormatter;
             if (c==gymClientList.get(i))gymClientList.remove(c);
         }
         addGymActions("Unregistered client: "+c.getPerson().getName());
-        /**לבדוק למה לא עושים את הלקוח null כאשר מוחקים הרשמה שלו( זה עשה לי בעיה בריצה עם זה שהוא null)(לכן שמתי את השורה מתחת בהערה)*/
-//        c.setClient(null);
+
     }
     public void findIfClientNotRegistered(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
@@ -140,10 +147,25 @@ import java.time.format.DateTimeFormatter;
 
 
     }
+
+        public void findIfClientNotRegisteredToLesson(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
+            boolean registed =false;
+            for (Client value : clientArrayList) {
+                if (value.equals(client)) {
+                    registed = true;
+                    break;
+                }
+            }
+            if (!registed)throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons\n");//צריך לראות מה בדיוק צריך בהדפסות בכל פונקציה
+
+
+
+        }
     public Session addSession(SessionType sessionType, String dateAndHour, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
         findIfQualified(instructor.getSessionQualified(),sessionType);
         Session newsession = SessionFactory.createSession(sessionType,dateAndHour,forumType,instructor);
         sessionList.add(newsession);
+        gymBalanc -= instructor.getSalaryPerHour();
         addGymActions("Created new session: "+newsession.sessionType+" on "+newsession.getFormattedDateTime()+" with instructor: "+newsession.thisSessionInstructor.getInstructorPerson().getName());
         return newsession;
     }
@@ -168,7 +190,7 @@ import java.time.format.DateTimeFormatter;
             }
         }
         if (!isQualified){
-            throw new InstructorNotQualifiedException("Instructor Not Qualified.");
+            throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
     }
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי
@@ -191,7 +213,7 @@ import java.time.format.DateTimeFormatter;
 
                 if (sessionDate.equals(formattedSpecificDay)) { // השוואת התאריכים
                     for (Client client : s.getListOfClientsInCurrentClass()) {
-                        client.update(message); // שליחת הודעה ללקוחות
+                        client.update("A message was sent to all gym clients:" + message); // שליחת הודעה ללקוחות
                     }
 
                     addGymActions("A message was sent to everyone registered for a session on " + sessionDate + " : " + message);
