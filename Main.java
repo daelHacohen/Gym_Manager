@@ -85,18 +85,18 @@ public class Main {
         gymSecretary.registerClientToLesson(c7, s5);
 
 
-        try{
-            gymSecretary.registerClientToLesson(c1,s1);
-        } catch (DuplicateClientException e) {
-            System.out.println(e.getMessage());
-        }
-
-        gymSecretary.unregisterClient(c2);
-        try {
-            gymSecretary.registerClientToLesson(c2, s3);
-        } catch (ClientNotRegisteredException e) {
-            System.out.println(e.getMessage());
-        }
+//        try{
+//            gymSecretary.registerClientToLesson(c1,s1);
+//        } catch (DuplicateClientException e) {
+//            System.out.println(e.getMessage());
+//        }
+//
+//         gymSecretary.unregisterClient(c2);
+//        try {
+//            gymSecretary.registerClientToLesson(c2, s3);
+//        } catch (ClientNotRegisteredException e) {
+//            System.out.println(e.getMessage());
+//        }
 
         gymSecretary.notify(s4, "The instructor will be a few minutes late for the session");
         gymSecretary.notify("01-01-2025", "Heavy traffic reported around the gym today. Plan ahead to avoid missing your session!");

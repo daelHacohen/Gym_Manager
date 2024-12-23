@@ -39,7 +39,7 @@ import java.util.ArrayList;
         public void findIfDuplicateClient(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
-                    throw new DuplicateClientException("Error: The client is already registered");
+//                    throw new DuplicateClientException("Error: The client is already registered");
                 }
             }
         }
@@ -97,7 +97,7 @@ import java.util.ArrayList;
     public void unregisterClient(Client c) throws ClientNotRegisteredException {
             findIfClientNotRegistered(c,gymClientList);
         for (int i = 0; i < gymClientList.size(); i++) {
-            if (c==gymClientList.get(i))gymClientList.remove(i);
+            if (c==gymClientList.get(i))gymClientList.remove(c);
         }
         addGymActions("Unregistered client: "+c.getPerson().getName());
         /**לבדוק למה לא עושים את הלקוח null כאשר מוחקים הרשמה שלו( זה עשה לי בעיה בריצה עם זה שהוא null)(לכן שמתי את השורה מתחת בהערה)*/
@@ -105,8 +105,11 @@ import java.util.ArrayList;
     }
     public void findIfClientNotRegistered(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
-        for (int i = 0; i < clientArrayList.size(); i++) {
-            if (clientArrayList.get(i).equals(client))registed =true;
+        for (Client value : clientArrayList) {
+            if (value.equals(client)) {
+                registed = true;
+                break;
+            }
         }
             if (!registed)throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");//צריך לראות מה בדיוק צריך בהדפסות בכל פונקציה
 
