@@ -68,7 +68,6 @@ public class Main {//
         } catch (InstructorNotQualifiedException e) {
             System.out.println(e.getMessage());
         }
-
         gymSecretary.registerClientToLesson(c1, s1);
         gymSecretary.registerClientToLesson(c1, s2);
         gymSecretary.registerClientToLesson(c1, s4);
@@ -83,6 +82,7 @@ public class Main {//
         gymSecretary.registerClientToLesson(c4, s5);
         gymSecretary.registerClientToLesson(c6, s5);
         gymSecretary.registerClientToLesson(c7, s5);
+
 
 
         try{
@@ -107,12 +107,12 @@ public class Main {//
         gym.setSecretary(p3,8000);
         Secretary newGymSecretary = gym.getSecretary();
 
-        try{
-            gymSecretary.registerClientToLesson(c1, s1);
-        }
-        catch (NullPointerException e){
-            System.out.println("Error: Former secretaries are not permitted to perform actions");
-        }
+//        try{
+//            gymSecretary.registerClientToLesson(c1, s1);
+//        }
+//        catch (NullPointerException e){
+//            System.out.println("Error: Former secretaries are not permitted to perform actions");
+//        }
 
         System.out.println("\n---Actions history---");
         newGymSecretary.printActions();

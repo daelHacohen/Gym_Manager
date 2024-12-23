@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
         }
 
         public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
+            if (!checkIfTheSameSecretary())return null;
             validateAge(person.getAge());
             Client newClient =new Client(person);
             findIfDuplicateClient(newClient,gymClientList);
@@ -56,6 +57,7 @@ import java.time.format.DateTimeFormatter;
         }
 
         public Instructor hireInstructor(Person p, int salary, ArrayList<SessionType>sessionQualified ) {
+            if (!checkIfTheSameSecretary())return null;
             Instructor instructor = new Instructor(p, salary, sessionQualified);
             gymInstructorList.add(instructor);
             addGymActions("Hired new instructor: "+instructor.getInstructorPerson().getName()+" with salary per hour: "+instructor.getSalaryPerHour());
@@ -127,6 +129,7 @@ import java.time.format.DateTimeFormatter;
 
 
     public void unregisterClient(Client c) throws ClientNotRegisteredException {
+            if (!checkIfTheSameSecretary())return;
             findIfClientNotRegistered(c,gymClientList);
         for (int i = 0; i < gymClientList.size(); i++) {
             if (c==gymClientList.get(i))gymClientList.remove(c);
@@ -162,6 +165,7 @@ import java.time.format.DateTimeFormatter;
 
         }
     public Session addSession(SessionType sessionType, String dateAndHour, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
+            if (!checkIfTheSameSecretary())return null;
         findIfQualified(instructor.getSessionQualified(),sessionType);
         Session newsession = SessionFactory.createSession(sessionType,dateAndHour,forumType,instructor);
         sessionList.add(newsession);
@@ -171,7 +175,7 @@ import java.time.format.DateTimeFormatter;
     }
 
     public void paySalaries() {
-
+if (!checkIfTheSameSecretary())return;
         secretaryPerson.setBalance(secretaryPerson.getBalance()+getSalary());
         gymBalanc-=this.getSalary();
     }
@@ -194,12 +198,14 @@ import java.time.format.DateTimeFormatter;
         }
     }
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי
+            if (!checkIfTheSameSecretary())return;
        for (Client client:s.getListOfClientsInCurrentClass()){
            client.update(messege);
        }
            addGymActions("A message was sent to everyone registered for session " + s.sessionType + " on " +s.getFormattedDateTime() + " : " + messege );
     }
         public void notify(String specificDay, String message) {
+            if (!checkIfTheSameSecretary())return;
             // הגדרת פורמטים
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -221,6 +227,7 @@ import java.time.format.DateTimeFormatter;
             }
         }
         public void notify (String messege){//הודעות לכלל לקוחות המכון
+            if (!checkIfTheSameSecretary())return;
         for (Client client : gymClientList){
             client.update(messege);
         }
@@ -228,6 +235,7 @@ import java.time.format.DateTimeFormatter;
         }
 
         public void printActions() {
+            if (!checkIfTheSameSecretary())return;
             for (int i = 0; i < gymActions.size(); i++) {
                 System.out.println(gymActions.get(i));
             }
