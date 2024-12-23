@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Person {
+public class Person {//
     private String name;
     private int balance;
     private Gender gender;

@@ -29,7 +29,12 @@ public void setSecretary(Person p, int salary){
            gymSecretary.setSecretaryPerson(p);
             gymSecretary.setSalary(salary);
        }
-        gymSecretary.addGymActions("A new secretary has started working at the gym: "+p.getName());
+    for (int i = 0; i < gymSecretary.getGymClientList().size(); i++) {
+        if (gymSecretary.getGymClientList().get(i).getPerson()==p){
+            gymSecretary.getGymClientList().remove(i);
+        }
+    }
+       gymSecretary.addGymActions("A new secretary has started working at the gym: "+p.getName());
 
 }
 public Secretary getSecretary(){
