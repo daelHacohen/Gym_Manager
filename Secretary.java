@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-    public class Secretary {
+    public class Secretary {//
         private Person secretaryPerson;
         private int salary;
         private ArrayList<Client> gymClientList;

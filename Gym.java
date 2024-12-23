@@ -3,7 +3,7 @@ public class Gym {//
     private Secretary gymSecretary;
     private String gymName;
 
-    private Gym() {
+    private Gym() {//
 
     }
 
