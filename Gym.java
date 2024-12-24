@@ -66,9 +66,9 @@ public Secretary getSecretary(){
             outPut+="ID: "+instructor.getInstructorPerson().getId()+" | Name: "+instructor.getInstructorPerson().getName()+" | Gender: "+instructor.getInstructorPerson().getGender()+" | Birthday: "+instructor.getInstructorPerson().getDate_of_birth()+" | Age: "+instructor.getInstructorPerson().getAge()+" | Balance: "+instructor.getInstructorPerson().getBalance()+" | Role: Instructor | Salary per Hour: "+instructor.getSalaryPerHour()+" | Certified Classes:"+arrayToString(instructor.getSessionQualified())+"\n";
         }
        outPut+="ID: "+gymSecretary.getPerson().getId()+" | Name: "+gymSecretary.getPerson().getName()+" | Gender: "+gymSecretary.getPerson().getGender()+" | Birthday: "+ getSecretary().getPerson().getDate_of_birth()+" | Age: "+gymSecretary.getPerson().getAge()+" | Balance: "+ gymSecretary.getPerson().getBalance()+" | Role: Secretary | Salary per Month: "+gymSecretary.getSalary()+"\n\n";
-        outPut+="Sessions Data:\n";
+        outPut+="Sessions Data:";
         for (Session session: gymSecretary.getSessionList()){
-            outPut+="Session Type: "+session.getSessionType()+" | Date: "+session.dateAndHour+" | Forum: "+session.getForumType()+" | Instructor: "+session.thisSessionInstructor.getInstructorPerson().getName()+" | Participants: "+session.getListOfClientsInCurrentClass().size()+"/"+session.getNumber_of_people_in_the_class()+"\n";
+            outPut+="\nSession Type: "+session.getSessionType()+" | Date: "+session.dateAndHour+" | Forum: "+session.getForumType()+" | Instructor: "+session.thisSessionInstructor.getInstructorPerson().getName()+" | Participants: "+session.getListOfClientsInCurrentClass().size()+"/"+session.getNumber_of_people_in_the_class();
         }
 
         return outPut;
