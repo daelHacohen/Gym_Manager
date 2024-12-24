@@ -6,11 +6,13 @@ public class Instructor {
 private Person instructorPerson;
 private int salaryPerHour;
 private ArrayList<SessionType> sessionQualified;
+private  int counterSesseions;
 
     public Instructor(Person instructorPerson, int salaryPerHour, ArrayList<SessionType>  sessionQualified) {
         this.instructorPerson = instructorPerson;
         this.salaryPerHour = salaryPerHour;
         this.sessionQualified = sessionQualified;
+        this.counterSesseions =0;
     }
 
     public Person getInstructorPerson() {
@@ -23,6 +25,11 @@ private ArrayList<SessionType> sessionQualified;
 
     public ArrayList<SessionType> getSessionQualified() {
         return sessionQualified;
+    }
+    public int getCounterSesseions(){return this.counterSesseions;}
+
+    public void setCounterSesseions(int counterSesseions) {
+        this.counterSesseions = counterSesseions;
     }
 }
 

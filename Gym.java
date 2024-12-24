@@ -24,11 +24,28 @@ public void setName(String gym_Name){
         gymName = gym_Name;
 }
 public void setSecretary(Person p, int salary){
-       if (gymSecretary==null){gymSecretary = new Secretary(p, salary);
+       if (gymSecretary==null) {
+           gymSecretary = new Secretary(p, salary);
        }else {
-           gymSecretary.setSecretaryPerson(p);
-            gymSecretary.setSalary(salary);
+
+           ArrayList<Client> copyGymClientList = gymSecretary.getGymClientList();
+           ArrayList<Instructor> copyGymInstructorList = gymSecretary.getGymInstructorList();
+           ArrayList<Session> copySessionList = gymSecretary.getSessionList();
+           int copyGymBalanc = gymSecretary.getGymBalanc();
+           ArrayList<String> copyGymActions = gymSecretary.getGymActions();
+
+           gymSecretary = new Secretary(p, salary);
+           gymSecretary.setGymClientList(copyGymClientList);
+           gymSecretary.setGymInstructorList(copyGymInstructorList);
+           gymSecretary.setSessionList(copySessionList);
+           gymSecretary.setGymBalanc(copyGymBalanc);
+           gymSecretary.setGymActions(copyGymActions);
        }
+//       }
+//       else {
+//           gymSecretary.setSecretaryPerson(p);
+//            gymSecretary.setSalary(salary);
+//       }
     for (int i = 0; i < gymSecretary.getGymClientList().size(); i++) {
         if (gymSecretary.getGymClientList().get(i).getPerson()==p){
             gymSecretary.getGymClientList().remove(i);
@@ -68,4 +85,7 @@ public Secretary getSecretary(){
         }
         return str;
     }
+
+
+
 }

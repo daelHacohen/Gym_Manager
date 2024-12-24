@@ -65,27 +65,39 @@ import java.time.format.DateTimeFormatter;
         }
 
         public boolean checkIfTheSameSecretary(){
-            boolean ans = false;
-            if (this==Gym.getInstance().getSecretary())ans=true;
-            return ans;
+
+            if (this==Gym.getInstance().getSecretary())return true;
+            else
+                checkIfTheSameSecretaryExeption();
+           return false;
+        }
+        public void checkIfTheSameSecretaryExeption()throws NullPointerException{
+            if (this!=Gym.getInstance().getSecretary())throw new NullPointerException("Error: Former secretaries are not permitted to perform actions");
         }
         public void registerClientToLesson(Client c, Session s) throws DuplicateClientException, ClientNotRegisteredException {// צריך להוסיף גם בדיקה של האם מועד השיעור חלף או לא.
-           if (!checkIfTheSameSecretary())return;
-            if (!findIfForumTypeIsValid(s.getForumType(),c.getPerson().getGender(),c.getPerson().getAge())){//בודק האם הסוג פורום של השיעור מתאים ללקוח
-                return;
-            }
-            if (LocalDateTime.parse(s.getFormattedDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).isBefore(LocalDateTime.now())) {
-                addGymActions("Failed registration: Session is not in the future");
-                return;
-            }
+            if (!checkIfTheSameSecretary())return;
+            if(!findIfForumTypeIsValid(s.getForumType(), c.getPerson().getGender(), c.getPerson().getAge())||LocalDateTime.parse(s.getFormattedDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).isBefore(LocalDateTime.now())||c.getPerson().getBalance() < s.getPrice()||s.getListOfClientsInCurrentClass().size() >= s.getNumber_of_people_in_the_class()) {
 
-            if (c.getPerson().getBalance()<s.getPrice()){//בודק האם הללקוח יש מספיק כסף בשביל לשלם לשיעור
-              addGymActions("Failed registration: Client doesn't have enough balance");
-                return;
-            }
+                findIfDuplicateClientToLesson(c,s.getListOfClientsInCurrentClass());//זורק שגיאה אם הלקוח כבר רשום לשיעור הנוכחי
+                findIfClientNotRegisteredToLesson(c,gymClientList);// זורק שגיאה אם הלקוח כבר לא רשום כלקוח
 
-            if (s.getListOfClientsInCurrentClass().size()>=s.getNumber_of_people_in_the_class()){//בודק האם יש מקום פנוי בשיעור הנוכחי
-               addGymActions("Failed registration: No available spots for session");
+                if (LocalDateTime.parse(s.getFormattedDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).isBefore(LocalDateTime.now())) {
+                    addGymActions("Failed registration: Session is not in the future");
+
+                }
+
+                addActionsIfFuromTypeIsNotValid(s.getForumType(), c.getPerson().getGender(), c.getPerson().getAge());
+
+                if (c.getPerson().getBalance() < s.getPrice()) {//בודק האם הללקוח יש מספיק כסף בשביל לשלם לשיעור
+                    addGymActions("Failed registration: Client doesn't have enough balance");
+
+                }
+
+                if (s.getListOfClientsInCurrentClass().size() >= s.getNumber_of_people_in_the_class()) {//בודק האם יש מקום פנוי בשיעור הנוכחי
+                    addGymActions("Failed registration: No available spots for session");
+
+                }
+
                 return;
             }
 
@@ -97,36 +109,51 @@ import java.time.format.DateTimeFormatter;
             gymBalanc = gymBalanc+s.getPrice();//מכניס לחשבון של החדר כושר את הכסף עבור השיעור
             s.getListOfClientsInCurrentClass().add(c);//מוסיף את הלקוח לשיעור
             addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+s.sessionType+" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
+
+
+        }
+        public  void addActionsIfFuromTypeIsNotValid(ForumType forumType,Gender gender, int age){
+            switch (forumType) {
+                case Male:
+                    if (!gender.equals(Gender.Male)) {
+                        addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                    }
+                case Seniors:
+                    if (!(age>=65)) {
+                        addGymActions("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+                    }
+                case Female:
+                    if (!gender.equals(Gender.Female)){
+                        addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
+                    }
+                case All:
+
+           }
         }
         public  boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
                 case Male:
-                   if (gender.equals(Gender.Male)) {
-                       return true;
-                   }else {
-                       addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
-                       return false;
-                   }
+                    if (gender.equals(Gender.Male)) {
+                        return true;
+                    }else {
+
+                        return false;
+                    }
                 case Seniors:
                     if (age>=65) {return true;
                     }else {
-                        addGymActions("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
                         return false;
                     }
                 case Female:
                     if (gender.equals(Gender.Female)){return true;
                     }else {
-                        addGymActions("Failed registration: Client's gender doesn't match the session's gender requirements");
                         return false;
                     }
                 case All:
-                   return true;
+                    return true;
             }
             return false;
         }
-
-
-
 
     public void unregisterClient(Client c) throws ClientNotRegisteredException {
             if (!checkIfTheSameSecretary())return;
@@ -159,7 +186,7 @@ import java.time.format.DateTimeFormatter;
                     break;
                 }
             }
-            if (!registed)throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons\n");//צריך לראות מה בדיוק צריך בהדפסות בכל פונקציה
+             if (!registed)throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons");//צריך לראות מה בדיוק צריך בהדפסות בכל פונקציה
 
 
 
@@ -169,7 +196,7 @@ import java.time.format.DateTimeFormatter;
         findIfQualified(instructor.getSessionQualified(),sessionType);
         Session newsession = SessionFactory.createSession(sessionType,dateAndHour,forumType,instructor);
         sessionList.add(newsession);
-        gymBalanc -= instructor.getSalaryPerHour();
+        instructor.setCounterSesseions(instructor.getCounterSesseions()+1);
         addGymActions("Created new session: "+newsession.sessionType+" on "+newsession.getFormattedDateTime()+" with instructor: "+newsession.thisSessionInstructor.getInstructorPerson().getName());
         return newsession;
     }
@@ -178,6 +205,12 @@ import java.time.format.DateTimeFormatter;
 if (!checkIfTheSameSecretary())return;
         secretaryPerson.setBalance(secretaryPerson.getBalance()+getSalary());
         gymBalanc-=this.getSalary();
+        for (Instructor instructor: gymInstructorList){
+            instructor.getInstructorPerson().setBalance((instructor.getSalaryPerHour()*instructor.getCounterSesseions())+instructor.getInstructorPerson().getBalance());
+            gymBalanc=gymBalanc-(instructor.getSalaryPerHour()*instructor.getCounterSesseions());
+            instructor.setCounterSesseions(0);
+        }
+        addGymActions("Salaries have been paid to all employees");
     }
     public static void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
@@ -219,7 +252,7 @@ if (!checkIfTheSameSecretary())return;
 
                 if (sessionDate.equals(formattedSpecificDay)) { // השוואת התאריכים
                     for (Client client : s.getListOfClientsInCurrentClass()) {
-                        client.update("A message was sent to all gym clients:" + message); // שליחת הודעה ללקוחות
+                        client.update(message); // שליחת הודעה ללקוחות
                     }
 
                     addGymActions("A message was sent to everyone registered for a session on " + sessionDate + " : " + message);
@@ -231,7 +264,7 @@ if (!checkIfTheSameSecretary())return;
         for (Client client : gymClientList){
             client.update(messege);
         }
-            addGymActions(messege);
+            addGymActions("A message was sent to all gym clients: " + messege);
         }
 
         public void printActions() {
@@ -243,6 +276,7 @@ if (!checkIfTheSameSecretary())return;
         }
         public void addGymActions(String action){
             gymActions.add(action);
+
         }
 
         public Person getPerson() {
@@ -267,6 +301,34 @@ if (!checkIfTheSameSecretary())return;
 
         public ArrayList<Session> getSessionList() {
             return sessionList;
+        }
+
+        public Person getSecretaryPerson() {
+            return secretaryPerson;
+        }
+
+        public void setGymClientList(ArrayList<Client> gymClientList) {
+            this.gymClientList = gymClientList;
+        }
+
+        public void setGymInstructorList(ArrayList<Instructor> gymInstructorList) {
+            this.gymInstructorList = gymInstructorList;
+        }
+
+        public void setSessionList(ArrayList<Session> sessionList) {
+            this.sessionList = sessionList;
+        }
+
+        public void setGymBalanc(int gymBalanc) {
+            this.gymBalanc = gymBalanc;
+        }
+
+        public ArrayList<String> getGymActions() {
+            return gymActions;
+        }
+
+        public void setGymActions(ArrayList<String> gymActions) {
+            this.gymActions = gymActions;
         }
     }
 

@@ -19,7 +19,6 @@ public class Main {//
         Gym gym = Gym.getInstance();
         gym.setName("CrossFit");
         gym.setSecretary(p1, 9000);
-
         Secretary gymSecretary = gym.getSecretary();
 
         Client c1 = gymSecretary.registerClient(p2);
@@ -107,12 +106,12 @@ public class Main {//
         gym.setSecretary(p3,8000);
         Secretary newGymSecretary = gym.getSecretary();
 
-//        try{
-//            gymSecretary.registerClientToLesson(c1, s1);
-//        }
-//        catch (NullPointerException e){
-//            System.out.println("Error: Former secretaries are not permitted to perform actions");
-//        }
+        try{
+            gymSecretary.registerClientToLesson(c1, s1);
+        }
+        catch (NullPointerException e){
+            System.out.println("Error: Former secretaries are not permitted to perform actions");
+        }
 
         System.out.println("\n---Actions history---");
         newGymSecretary.printActions();
