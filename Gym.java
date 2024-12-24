@@ -41,11 +41,6 @@ public void setSecretary(Person p, int salary){
            gymSecretary.setGymBalanc(copyGymBalanc);
            gymSecretary.setGymActions(copyGymActions);
        }
-//       }
-//       else {
-//           gymSecretary.setSecretaryPerson(p);
-//            gymSecretary.setSalary(salary);
-//       }
     for (int i = 0; i < gymSecretary.getGymClientList().size(); i++) {
         if (gymSecretary.getGymClientList().get(i).getPerson()==p){
             gymSecretary.getGymClientList().remove(i);
@@ -78,7 +73,7 @@ public Secretary getSecretary(){
 
         return outPut;
     }
-    public String arrayToString(ArrayList<SessionType>sessionQualifiedList){
+    private String arrayToString(ArrayList<SessionType>sessionQualifiedList){
         String str = " "+sessionQualifiedList.get(0);
         for (int i = 1; i < sessionQualifiedList.size(); i++) {
             str+= ", "+sessionQualifiedList.get(i);

@@ -21,13 +21,13 @@ import java.time.format.DateTimeFormatter;
             gymActions= new ArrayList<>();
         }
 
-        public void setSecretaryPerson(Person secretaryPerson) {
-            this.secretaryPerson = secretaryPerson;
-        }
-
-        public void setSalary(int salary) {
-            this.salary = salary;
-        }
+//        public void setSecretaryPerson(Person secretaryPerson) {
+//            this.secretaryPerson = secretaryPerson;
+//        }
+//
+//        public void setSalary(int salary) {
+//            this.salary = salary;
+//        }
 
         public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
             if (!checkIfTheSameSecretary())return null;
@@ -40,7 +40,7 @@ import java.time.format.DateTimeFormatter;
 
         }
 
-        public void findIfDuplicateClient(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
+        private void findIfDuplicateClient(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
                     throw new DuplicateClientException("Error: The client is already registered");
@@ -48,7 +48,7 @@ import java.time.format.DateTimeFormatter;
             }
         }
 
-        public void findIfDuplicateClientToLesson(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
+        private void findIfDuplicateClientToLesson(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
                     throw new DuplicateClientException("Error: The client is already registered for this lesson");
@@ -64,14 +64,14 @@ import java.time.format.DateTimeFormatter;
             return instructor;
         }
 
-        public boolean checkIfTheSameSecretary(){
+        private boolean checkIfTheSameSecretary(){
 
             if (this==Gym.getInstance().getSecretary())return true;
             else
                 checkIfTheSameSecretaryExeption();
            return false;
         }
-        public void checkIfTheSameSecretaryExeption()throws NullPointerException{
+        private void checkIfTheSameSecretaryExeption()throws NullPointerException{
             if (this!=Gym.getInstance().getSecretary())throw new NullPointerException("Error: Former secretaries are not permitted to perform actions");
         }
         public void registerClientToLesson(Client c, Session s) throws DuplicateClientException, ClientNotRegisteredException {// צריך להוסיף גם בדיקה של האם מועד השיעור חלף או לא.
@@ -112,7 +112,7 @@ import java.time.format.DateTimeFormatter;
 
 
         }
-        public  void addActionsIfFuromTypeIsNotValid(ForumType forumType,Gender gender, int age){
+        private  void addActionsIfFuromTypeIsNotValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
                 case Male:
                     if (!gender.equals(Gender.Male)) {
@@ -130,7 +130,7 @@ import java.time.format.DateTimeFormatter;
 
            }
         }
-        public  boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
+        private boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
                 case Male:
                     if (gender.equals(Gender.Male)) {
@@ -164,7 +164,7 @@ import java.time.format.DateTimeFormatter;
         addGymActions("Unregistered client: "+c.getPerson().getName());
 
     }
-    public void findIfClientNotRegistered(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
+        private void findIfClientNotRegistered(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
         for (Client value : clientArrayList) {
             if (value.equals(client)) {
@@ -178,7 +178,7 @@ import java.time.format.DateTimeFormatter;
 
     }
 
-        public void findIfClientNotRegisteredToLesson(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
+        private void findIfClientNotRegisteredToLesson(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
             for (Client value : clientArrayList) {
                 if (value.equals(client)) {
@@ -212,14 +212,14 @@ if (!checkIfTheSameSecretary())return;
         }
         addGymActions("Salaries have been paid to all employees");
     }
-    public static void validateAge(int age) throws InvalidAgeException {
+   private void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
             throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
 
         }
     }
 
-    public static void findIfQualified(ArrayList<SessionType>sessionQualified, SessionType currentSessionType) throws InstructorNotQualifiedException {
+    private void findIfQualified(ArrayList<SessionType>sessionQualified, SessionType currentSessionType) throws InstructorNotQualifiedException {
         boolean isQualified = false;
         for (int i = 0; i < sessionQualified.size(); i++) {
             if (sessionQualified.get(i)==currentSessionType) {
