@@ -243,7 +243,7 @@ if (!checkIfTheSameSecretary())return;
             }
         }
         if (!isQualified){
-            throw new InstructorNotQualifiedException("Error: gym.customers.Instructor is not qualified to conduct this session type.");
+            throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
     }
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי

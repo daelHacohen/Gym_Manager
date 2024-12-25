@@ -70,12 +70,12 @@ public Secretary getSecretary(){
         }
         outPut+="\nEmployees Data:\n";
         for (Instructor instructor: gymSecretary.getGymInstructorList()){
-            outPut+="ID: "+instructor.getInstructorPerson().getId()+" | Name: "+instructor.getInstructorPerson().getName()+" | Gender: "+instructor.getInstructorPerson().getGender()+" | Birthday: "+instructor.getInstructorPerson().getDate_of_birth()+" | Age: "+instructor.getInstructorPerson().getAge()+" | Balance: "+instructor.getInstructorPerson().getBalance()+" | Role: gym.customers.Instructor | Salary per Hour: "+instructor.getSalaryPerHour()+" | Certified Classes:"+arrayToString(instructor.getSessionQualified())+"\n";
+            outPut+="ID: "+instructor.getInstructorPerson().getId()+" | Name: "+instructor.getInstructorPerson().getName()+" | Gender: "+instructor.getInstructorPerson().getGender()+" | Birthday: "+instructor.getInstructorPerson().getDate_of_birth()+" | Age: "+instructor.getInstructorPerson().getAge()+" | Balance: "+instructor.getInstructorPerson().getBalance()+" | Role: Instructor | Salary per Hour: "+instructor.getSalaryPerHour()+" | Certified Classes:"+arrayToString(instructor.getSessionQualified())+"\n";
         }
        outPut+="ID: "+gymSecretary.getPerson().getId()+" | Name: "+gymSecretary.getPerson().getName()+" | Gender: "+gymSecretary.getPerson().getGender()+" | Birthday: "+ getSecretary().getPerson().getDate_of_birth()+" | Age: "+gymSecretary.getPerson().getAge()+" | Balance: "+ gymSecretary.getPerson().getBalance()+" | Role: Secretary | Salary per Month: "+gymSecretary.getSalary()+"\n\n";
         outPut+="Sessions Data:";
         for (Session session: gymSecretary.getSessionList()){
-            outPut+="\nSession Type: "+session.getSessionType()+" | Date: "+ session.getDateAndHour() +" | Forum: "+session.getForumType()+" | gym.customers.Instructor: "+ session.getThisSessionInstructor().getInstructorPerson().getName()+" | Participants: "+session.getListOfClientsInCurrentClass().size()+"/"+session.getNumber_of_people_in_the_class();
+            outPut+="\nSession Type: "+session.getSessionType()+" | Date: "+ session.getDateAndHour() +" | Forum: "+session.getForumType()+" | Instructor: "+ session.getThisSessionInstructor().getInstructorPerson().getName()+" | Participants: "+session.getListOfClientsInCurrentClass().size()+"/"+session.getNumber_of_people_in_the_class();
         }
 
         return outPut;
