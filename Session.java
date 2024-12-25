@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
     protected int Number_of_people_in_the_class;
     protected int price;
     protected ArrayList<Client> clientsInCurrentClass;
+     protected ArrayList<Observer> observerClientsInCurrentClass;
 
 
     public Session( SessionType sessionType,String dateAndHour, ForumType currentForumType, Instructor thisSessionInstructor) {
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
         this.currentForumType = currentForumType;
         this.thisSessionInstructor = thisSessionInstructor;
         clientsInCurrentClass =new ArrayList<>();
+        observerClientsInCurrentClass =new ArrayList<>();
 
     }
 
@@ -48,6 +50,10 @@ import java.time.format.DateTimeFormatter;
     public ArrayList<Client> getListOfClientsInCurrentClass() {
         return clientsInCurrentClass;
     }
+
+     public ArrayList<Observer> getObserverClientsInCurrentClass() {
+         return observerClientsInCurrentClass;
+     }
 
      public SessionType getSessionType() {
          return sessionType;

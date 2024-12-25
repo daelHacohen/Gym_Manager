@@ -83,7 +83,6 @@ public class Main {//
         gymSecretary.registerClientToLesson(c7, s5);
 
 
-
         try{
             gymSecretary.registerClientToLesson(c1,s1);
         } catch (DuplicateClientException e) {

@@ -3,10 +3,12 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-    public class Secretary {//
+    public class Secretary implements Subject{//
         private Person secretaryPerson;
         private int salary;
         private ArrayList<Client> gymClientList;
+        private ArrayList<Observer> ObserverGymClientList;
+
         private ArrayList<Instructor> gymInstructorList;
         private ArrayList<Session> sessionList;
         private int gymBalanc;
@@ -19,6 +21,7 @@ import java.time.format.DateTimeFormatter;
             gymInstructorList =new ArrayList<>();
             sessionList =new ArrayList<>();
             gymActions= new ArrayList<>();
+            ObserverGymClientList= new ArrayList<>();
         }
 
 //        public void setSecretaryPerson(Person secretaryPerson) {
@@ -35,6 +38,7 @@ import java.time.format.DateTimeFormatter;
             Client newClient =new Client(person);
             findIfDuplicateClient(newClient,gymClientList);
             gymClientList.add(newClient);
+            registerToReceiveMessages(ObserverGymClientList,newClient);
             addGymActions("Registered new client: "+newClient.getPerson().getName());
             return newClient;
 
@@ -108,6 +112,8 @@ import java.time.format.DateTimeFormatter;
             c.getPerson().setBalance(c.getPerson().getBalance()-s.getPrice());//לוקח כסף מהלקוח עבור השיעור
             gymBalanc = gymBalanc+s.getPrice();//מכניס לחשבון של החדר כושר את הכסף עבור השיעור
             s.getListOfClientsInCurrentClass().add(c);//מוסיף את הלקוח לשיעור
+           registerToReceiveMessages(s.getObserverClientsInCurrentClass(),c);
+//            s.getObserverClientsInCurrentClass().add(c);
             addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+s.sessionType+" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
 
 
@@ -159,7 +165,9 @@ import java.time.format.DateTimeFormatter;
             if (!checkIfTheSameSecretary())return;
             findIfClientNotRegistered(c,gymClientList);
         for (int i = 0; i < gymClientList.size(); i++) {
-            if (c==gymClientList.get(i))gymClientList.remove(c);
+            if (c==gymClientList.get(i)){gymClientList.remove(c);
+                unRegisterToReceiveMessages(ObserverGymClientList,c);
+            }
         }
         addGymActions("Unregistered client: "+c.getPerson().getName());
 
@@ -232,8 +240,8 @@ if (!checkIfTheSameSecretary())return;
     }
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי
             if (!checkIfTheSameSecretary())return;
-       for (Client client:s.getListOfClientsInCurrentClass()){
-           client.update(messege);
+       for (Observer observer:s.getObserverClientsInCurrentClass()){
+           observer.update(messege);
        }
            addGymActions("A message was sent to everyone registered for session " + s.sessionType + " on " +s.getFormattedDateTime() + " : " + messege );
     }
@@ -251,20 +259,33 @@ if (!checkIfTheSameSecretary())return;
                 LocalDate sessionDate = LocalDate.parse(s.getFormattedDate(), outputFormatter);
 
                 if (sessionDate.equals(formattedSpecificDay)) { // השוואת התאריכים
-                    for (Client client : s.getListOfClientsInCurrentClass()) {
-                        client.update(message); // שליחת הודעה ללקוחות
+                    for (Observer observer: s.getObserverClientsInCurrentClass()) {
+                        observer.update(message); // שליחת הודעה ללקוחות
                     }
 
                     addGymActions("A message was sent to everyone registered for a session on " + sessionDate + " : " + message);
                 }
             }
         }
+
+
+
         public void notify (String messege){//הודעות לכלל לקוחות המכון
             if (!checkIfTheSameSecretary())return;
-        for (Client client : gymClientList){
-            client.update(messege);
+        for (Observer observer : ObserverGymClientList){
+            observer.update(messege);
         }
             addGymActions("A message was sent to all gym clients: " + messege);
+        }
+        @Override
+        public void registerToReceiveMessages(ArrayList<Observer> observerArrayList,Observer observer) {
+            observerArrayList.add(observer);
+
+        }
+
+        @Override
+        public void unRegisterToReceiveMessages(ArrayList<Observer> observerArrayList,Observer observer) {
+        observerArrayList.remove(observer);
         }
 
         public void printActions() {
@@ -275,61 +296,75 @@ if (!checkIfTheSameSecretary())return;
 
         }
         public void addGymActions(String action){
+            if (!checkIfTheSameSecretary())return;
             gymActions.add(action);
 
         }
 
         public Person getPerson() {
+            if (!checkIfTheSameSecretary())return null;
             return secretaryPerson;
         }
 
         public int getSalary() {
+            if (!checkIfTheSameSecretary())return 0;
             return salary;
         }
 
         public int getGymBalanc() {
+            if (!checkIfTheSameSecretary())return 0;
             return gymBalanc;
         }
 
         public ArrayList<Client> getGymClientList() {
+            if (!checkIfTheSameSecretary())return null;
             return gymClientList;
         }
 
         public ArrayList<Instructor> getGymInstructorList() {
+            if (!checkIfTheSameSecretary())return null;
             return gymInstructorList;
         }
 
         public ArrayList<Session> getSessionList() {
+            if (!checkIfTheSameSecretary())return null;
             return sessionList;
         }
 
-        public Person getSecretaryPerson() {
-            return secretaryPerson;
-        }
+//        public Person getSecretaryPerson() {
+//            return secretaryPerson;
+//        }
 
         public void setGymClientList(ArrayList<Client> gymClientList) {
+            if (!checkIfTheSameSecretary())return;
             this.gymClientList = gymClientList;
         }
 
         public void setGymInstructorList(ArrayList<Instructor> gymInstructorList) {
+            if (!checkIfTheSameSecretary())return;
             this.gymInstructorList = gymInstructorList;
         }
 
         public void setSessionList(ArrayList<Session> sessionList) {
+            if (!checkIfTheSameSecretary())return;
             this.sessionList = sessionList;
         }
 
         public void setGymBalanc(int gymBalanc) {
+            if (!checkIfTheSameSecretary())return;
             this.gymBalanc = gymBalanc;
         }
 
         public ArrayList<String> getGymActions() {
+            if (!checkIfTheSameSecretary())return null;
             return gymActions;
         }
 
         public void setGymActions(ArrayList<String> gymActions) {
+            if (!checkIfTheSameSecretary())return;
             this.gymActions = gymActions;
         }
+
     }
 
 
