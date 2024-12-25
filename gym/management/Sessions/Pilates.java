@@ -1,6 +1,11 @@
+package gym.management.Sessions;
+
+import gym.customers.Instructor;
+
+
 import java.util.ArrayList;
 
-public class Pilates extends Session{
+public class Pilates extends Session {
 
     public Pilates(SessionType sessionType, String dateAndHour, ForumType currentForumType, Instructor thisSessionInstructor) {
         super(sessionType, dateAndHour, currentForumType, thisSessionInstructor);

@@ -1,8 +1,16 @@
+package gym.management.Sessions;
+
+import gym.customers.Client;
+import gym.customers.Instructor;
+import gym.customers.Observer;
+
+
+
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
- abstract class Session{
+ public abstract class Session{
     protected SessionType sessionType;
     protected String dateAndHour;
     protected ForumType currentForumType;
@@ -61,5 +69,13 @@ import java.time.format.DateTimeFormatter;
 
      public ForumType getForumType() {
          return currentForumType;
+     }
+
+     public String getDateAndHour() {
+         return dateAndHour;
+     }
+
+     public Instructor getThisSessionInstructor() {
+         return thisSessionInstructor;
      }
  }

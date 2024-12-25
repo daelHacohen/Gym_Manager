@@ -1,3 +1,11 @@
+package gym.management;
+import gym.Exception.*;
+import gym.customers.*;
+import gym.management.Sessions.ForumType;
+import gym.management.Sessions.Session;
+import gym.management.Sessions.SessionFactory;
+import gym.management.Sessions.SessionType;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -114,11 +122,11 @@ import java.time.format.DateTimeFormatter;
             s.getListOfClientsInCurrentClass().add(c);//מוסיף את הלקוח לשיעור
            registerToReceiveMessages(s.getObserverClientsInCurrentClass(),c);
 //            s.getObserverClientsInCurrentClass().add(c);
-            addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+s.sessionType+" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
+            addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+ s.getSessionType() +" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
 
 
         }
-        private  void addActionsIfFuromTypeIsNotValid(ForumType forumType,Gender gender, int age){
+        private  void addActionsIfFuromTypeIsNotValid(ForumType forumType, Gender gender, int age){
             switch (forumType) {
                 case Male:
                     if (!gender.equals(Gender.Male)) {
@@ -205,7 +213,7 @@ import java.time.format.DateTimeFormatter;
         Session newsession = SessionFactory.createSession(sessionType,dateAndHour,forumType,instructor);
         sessionList.add(newsession);
         instructor.setCounterSesseions(instructor.getCounterSesseions()+1);
-        addGymActions("Created new session: "+newsession.sessionType+" on "+newsession.getFormattedDateTime()+" with instructor: "+newsession.thisSessionInstructor.getInstructorPerson().getName());
+        addGymActions("Created new session: "+ newsession.getSessionType() +" on "+newsession.getFormattedDateTime()+" with instructor: "+ newsession.getThisSessionInstructor().getInstructorPerson().getName());
         return newsession;
     }
 
@@ -235,7 +243,7 @@ if (!checkIfTheSameSecretary())return;
             }
         }
         if (!isQualified){
-            throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
+            throw new InstructorNotQualifiedException("Error: gym.customers.Instructor is not qualified to conduct this session type.");
         }
     }
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי
@@ -243,7 +251,7 @@ if (!checkIfTheSameSecretary())return;
        for (Observer observer:s.getObserverClientsInCurrentClass()){
            observer.update(messege);
        }
-           addGymActions("A message was sent to everyone registered for session " + s.sessionType + " on " +s.getFormattedDateTime() + " : " + messege );
+           addGymActions("A message was sent to everyone registered for session " + s.getSessionType() + " on " +s.getFormattedDateTime() + " : " + messege );
     }
         public void notify(String specificDay, String message) {
             if (!checkIfTheSameSecretary())return;

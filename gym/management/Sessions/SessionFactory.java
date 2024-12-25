@@ -1,3 +1,7 @@
+package gym.management.Sessions;
+
+import gym.customers.Instructor;
+
 public class SessionFactory {
     public static Session createSession(SessionType sessionType, String str, ForumType forumType, Instructor instructor) {
         switch (sessionType) {
