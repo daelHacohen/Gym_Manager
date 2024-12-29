@@ -6,7 +6,7 @@ import gym.customers.Instructor;
  * The SessionFactory class is responsible for creating instances of different types of gym sessions.
  * It follows the Factory Design Pattern to provide a unified interface for creating session objects.
  */
-public class SessionFactory {
+public class SessionFactory {//
 
     /**
      * Creates a specific type of session based on the given SessionType.

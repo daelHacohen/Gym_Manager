@@ -6,7 +6,7 @@ import java.util.Objects;
  * The Client class represents a customer in the gym management system.
  * It implements the Observer interface, allowing clients to receive notifications.
  */
-public class Client implements Observer  {
+public class Client implements Observer  {//
 
     private Person person;
     private ArrayList<String> notifications;

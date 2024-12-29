@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * The ThaiBoxing class represents a specific type of gym session focused on Thai Boxing.
  * It extends the abstract Session class and sets predefined values for price and class capacity.
  */
-public class ThaiBoxing extends Session {
+public class ThaiBoxing extends Session {//
 
     /**
      * Constructs a ThaiBoxing session with the specified session details.

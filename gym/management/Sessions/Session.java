@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  * The Session class represents an abstract gym session with various details such as date, time,
  * instructor, clients, and observers.
  */
- public abstract class Session{
+ public abstract class Session{//
     protected SessionType sessionType;
     protected String dateAndHour;
     protected ForumType currentForumType;

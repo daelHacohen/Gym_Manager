@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * The Ninja class represents a specific type of gym session focused on Ninja-style training.
  * It extends the abstract Session class and defines properties specific to Ninja sessions.
  */
-public class Ninja extends Session {
+public class Ninja extends Session {//
 
     /**
      * Constructs a Ninja session with the given details.

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * The Instructor class represents an instructor in the gym.
  * It holds information about the instructor's personal details, salary, qualified session types, and session count.
  */
-public class Instructor {
+public class Instructor {//
 
 private Person instructorPerson;
 private int salaryPerHour;

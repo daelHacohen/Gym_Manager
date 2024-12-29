@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * The Gym class represents a singleton gym management system.
  * It manages the gym's name, secretary, clients, instructors, and sessions.
  */
-public class Gym {
+public class Gym {//
     private static Gym instance;
     private Secretary gymSecretary;
     private String gymName;

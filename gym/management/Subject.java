@@ -4,7 +4,7 @@ import gym.management.Sessions.Session;
 
 import java.util.ArrayList;
 
-public interface Subject {
+public interface Subject {//
      public void registerToReceiveMessages(ArrayList<Observer>observerArrayList, Observer observer);
     public void unRegisterToReceiveMessages(ArrayList<Observer>observerArrayList, Observer observer);
     /**

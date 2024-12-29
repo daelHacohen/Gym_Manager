@@ -2,7 +2,7 @@ package gym.customers;
 /**
  * The Observer interface defines a contract for objects that need to receive updates or notifications.
  */
-public interface Observer {
+public interface Observer {//
 
     /**
      * Receives an update or notification message.

@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
  * session management, and salary payments. It also implements the Subject interface to
  * handle notifications.
  */
-    public class Secretary implements Subject{//
+    public class Secretary implements Subject{
         private Person secretaryPerson;
         private int salary;
         private ArrayList<Client> gymClientList;

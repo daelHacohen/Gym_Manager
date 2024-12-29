@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * The Pilates class represents a specific type of gym session focused on Pilates exercises.
  * It extends the abstract Session class and sets predefined values for price and class capacity.
  */
-public class Pilates extends Session {
+public class Pilates extends Session {//
 
     /**
      * Constructs a Pilates session with the specified session details.
