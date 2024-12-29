@@ -1,4 +1,3 @@
-
 import gym.Exception.*;
 import gym.customers.*;
 import gym.management.*;
@@ -7,7 +6,7 @@ import gym.management.Sessions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Main {//
+public class Main {
     public static void main(String[] args) throws InstructorNotQualifiedException, DuplicateClientException, InvalidAgeException, ClientNotRegisteredException {
         Person p1 = new Person("David", 500, Gender.Male, "20-02-1978");
         Person p2 = new Person("Nofar", 1200, Gender.Female, "03-07-1998");
@@ -23,6 +22,7 @@ public class Main {//
         Gym gym = Gym.getInstance();
         gym.setName("CrossFit");
         gym.setSecretary(p1, 9000);
+
         Secretary gymSecretary = gym.getSecretary();
 
         Client c1 = gymSecretary.registerClient(p2);
@@ -71,6 +71,7 @@ public class Main {//
         } catch (InstructorNotQualifiedException e) {
             System.out.println(e.getMessage());
         }
+
         gymSecretary.registerClientToLesson(c1, s1);
         gymSecretary.registerClientToLesson(c1, s2);
         gymSecretary.registerClientToLesson(c1, s4);
@@ -93,7 +94,7 @@ public class Main {//
             System.out.println(e.getMessage());
         }
 
-         gymSecretary.unregisterClient(c2);
+        gymSecretary.unregisterClient(c2);
         try {
             gymSecretary.registerClientToLesson(c2, s3);
         } catch (ClientNotRegisteredException e) {

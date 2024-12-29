@@ -406,6 +406,7 @@ if (!checkIfTheSameSecretary())return;
 
         }
 
+
         public Person getPerson() {
             if (!checkIfTheSameSecretary())return null;
             return secretaryPerson;
