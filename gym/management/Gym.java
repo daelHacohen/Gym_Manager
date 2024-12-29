@@ -7,15 +7,26 @@ import gym.management.Sessions.SessionType;
 
 import java.util.ArrayList;
 
-public class Gym {//
+/**
+ * The Gym class represents a singleton gym management system.
+ * It manages the gym's name, secretary, clients, instructors, and sessions.
+ */
+public class Gym {
     private static Gym instance;
     private Secretary gymSecretary;
     private String gymName;
 
-    private Gym() {//
+    /**
+     * Private constructor to enforce the singleton pattern.
+     */
+    private Gym() {
 
     }
 
+    /**
+     * Returns the singleton instance of the Gym.
+     * @return The singleton instance of Gym.
+     */
     public static Gym getInstance() {
         if (instance == null) {
             synchronized (Gym.class){
@@ -27,9 +38,20 @@ public class Gym {//
         return instance;
     }
 
+    /**
+     * Sets the name of the gym.
+     * @param gym_Name The name to set for the gym.
+     */
 public void setName(String gym_Name){
         gymName = gym_Name;
 }
+
+    /**
+     * Sets the secretary of the gym.
+     * Transfers data from the previous secretary if one exists.
+     * @param p      The person who will be the secretary.
+     * @param salary The salary of the secretary.
+     */
 public void setSecretary(Person p, int salary){
        if (gymSecretary==null) {
            gymSecretary = new Secretary(p, salary);
@@ -56,11 +78,19 @@ public void setSecretary(Person p, int salary){
        gymSecretary.addGymActions("A new secretary has started working at the gym: "+p.getName());
 
 }
+
+    /**
+     * Retrieves the current secretary of the gym.
+     * @return The current gym secretary.
+     */
 public Secretary getSecretary(){
         return gymSecretary;
 }
 
-
+    /**
+     * Provides a string representation of the gym's details, including secretary, clients, instructors, and sessions.
+     * @return A formatted string containing gym details.
+     */
     @Override
     public String toString() {
         String outPut ="Gym Name: "+this.gymName+"\nGym Secretary: ID: "+gymSecretary.getPerson().getId()+" | Name: "+gymSecretary.getPerson().getName()+" | Gender: "+gymSecretary.getPerson().getGender()+" | Birthday: "+ getSecretary().getPerson().getDate_of_birth()+" | Age: "+gymSecretary.getPerson().getAge()+" | Balance: "+ gymSecretary.getPerson().getBalance()+" | Role: Secretary | Salary per Month: "+gymSecretary.getSalary()+"\nGym Balance: "+gymSecretary.getGymBalanc()+"\n\n";
@@ -80,6 +110,12 @@ public Secretary getSecretary(){
 
         return outPut;
     }
+
+    /**
+     * Converts a list of SessionType to a comma-separated string.
+     * @param sessionQualifiedList List of session types.
+     * @return A comma-separated string of session types.
+     */
     private String arrayToString(ArrayList<SessionType>sessionQualifiedList){
         String str = " "+sessionQualifiedList.get(0);
         for (int i = 1; i < sessionQualifiedList.size(); i++) {

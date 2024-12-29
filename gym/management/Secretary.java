@@ -10,7 +10,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+/**
+ * The Secretary class manages gym operations, including client and instructor registrations,
+ * session management, and salary payments. It also implements the Subject interface to
+ * handle notifications.
+ */
     public class Secretary implements Subject{//
         private Person secretaryPerson;
         private int salary;
@@ -22,6 +26,11 @@ import java.time.format.DateTimeFormatter;
         private int gymBalanc;
         private ArrayList<String>gymActions;
 
+        /**
+         * Constructs a new Secretary object.
+         * @param secretaryPerson The person acting as the secretary.
+         * @param salary The salary of the secretary.
+         */
         public Secretary(Person secretaryPerson, int salary) {
             this.secretaryPerson = secretaryPerson;
             this.salary = salary;
@@ -32,14 +41,13 @@ import java.time.format.DateTimeFormatter;
             ObserverGymClientList= new ArrayList<>();
         }
 
-//        public void setSecretaryPerson(Person secretaryPerson) {
-//            this.secretaryPerson = secretaryPerson;
-//        }
-//
-//        public void setSalary(int salary) {
-//            this.salary = salary;
-//        }
-
+        /**
+         * Registers a new client in the gym.
+         * @param person The person to be registered as a client.
+         * @return The registered Client object.
+         * @throws InvalidAgeException if the client is under 18.
+         * @throws DuplicateClientException if the client is already registered.
+         */
         public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
             if (!checkIfTheSameSecretary())return null;
             validateAge(person.getAge());
@@ -51,7 +59,12 @@ import java.time.format.DateTimeFormatter;
             return newClient;
 
         }
-
+        /**
+         * Checks if a client is already registered.
+         * @param clientToComper The client to check.
+         * @param clients The list of registered clients.
+         * @throws DuplicateClientException if the client is already registered.
+         */
         private void findIfDuplicateClient(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
@@ -59,7 +72,12 @@ import java.time.format.DateTimeFormatter;
                 }
             }
         }
-
+        /**
+         * Checks if a client is already registered to the lesson.
+         * @param clientToComper The client to check.
+         * @param clients The list of registered clients.
+         * @throws DuplicateClientException if the client is already registered to the lesson.
+         */
         private void findIfDuplicateClientToLesson(Client clientToComper, ArrayList<Client>clients) throws DuplicateClientException {
             for (int i = 0; i < clients.size(); i++) {
                 if (clients.get(i).equals(clientToComper)){
@@ -68,6 +86,13 @@ import java.time.format.DateTimeFormatter;
             }
         }
 
+        /**
+         * Hires a new instructor.
+         * @param p The person being hired.
+         * @param salary The instructor's salary.
+         * @param sessionQualified The sessions the instructor is qualified for.
+         * @return The hired Instructor object.
+         */
         public Instructor hireInstructor(Person p, int salary, ArrayList<SessionType>sessionQualified ) {
             if (!checkIfTheSameSecretary())return null;
             Instructor instructor = new Instructor(p, salary, sessionQualified);
@@ -75,7 +100,10 @@ import java.time.format.DateTimeFormatter;
             addGymActions("Hired new instructor: "+instructor.getInstructorPerson().getName()+" with salary per hour: "+instructor.getSalaryPerHour());
             return instructor;
         }
-
+        /**
+         * Checks if the current secretary instance matches the active secretary.
+         * @return true if the current instance is the active secretary, otherwise false.
+         */
         private boolean checkIfTheSameSecretary(){
 
             if (this==Gym.getInstance().getSecretary())return true;
@@ -83,9 +111,21 @@ import java.time.format.DateTimeFormatter;
                 checkIfTheSameSecretaryExeption();
            return false;
         }
+        /**
+         * Throws an exception if the current secretary is not the active secretary.
+         * @throws NullPointerException if the current instance is not the active secretary.
+         */
         private void checkIfTheSameSecretaryExeption()throws NullPointerException{
             if (this!=Gym.getInstance().getSecretary())throw new NullPointerException("Error: Former secretaries are not permitted to perform actions");
         }
+
+        /**
+         * Registers a client for a session.
+         * @param c The client to register.
+         * @param s The session to register for.
+         * @throws DuplicateClientException if the client is already registered for the session.
+         * @throws ClientNotRegisteredException if the client is not registered with the gym.
+         */
         public void registerClientToLesson(Client c, Session s) throws DuplicateClientException, ClientNotRegisteredException {// צריך להוסיף גם בדיקה של האם מועד השיעור חלף או לא.
             if (!checkIfTheSameSecretary())return;
             if(!findIfForumTypeIsValid(s.getForumType(), c.getPerson().getGender(), c.getPerson().getAge())||LocalDateTime.parse(s.getFormattedDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).isBefore(LocalDateTime.now())||c.getPerson().getBalance() < s.getPrice()||s.getListOfClientsInCurrentClass().size() >= s.getNumber_of_people_in_the_class()) {
@@ -123,9 +163,13 @@ import java.time.format.DateTimeFormatter;
            registerToReceiveMessages(s.getObserverClientsInCurrentClass(),c);
 //            s.getObserverClientsInCurrentClass().add(c);
             addGymActions("Registered client: "+c.getPerson().getName()+" to session: "+ s.getSessionType() +" on "+s.getFormattedDateTime()+" for price: "+s.getPrice());
-
-
         }
+        /**
+         * Logs specific actions when a client's gender or age does not match the forum requirements.
+         * @param forumType The type of forum (Male, Female, Seniors, All).
+         * @param gender The gender of the client.
+         * @param age The age of the client.
+         */
         private  void addActionsIfFuromTypeIsNotValid(ForumType forumType, Gender gender, int age){
             switch (forumType) {
                 case Male:
@@ -144,6 +188,13 @@ import java.time.format.DateTimeFormatter;
 
            }
         }
+        /**
+         * Validates whether a client's gender or age matches the forum requirements.
+         * @param forumType The type of forum (Male, Female, Seniors, All).
+         * @param gender The gender of the client.
+         * @param age The age of the client.
+         * @return true if the client meets the forum's requirements; false otherwise.
+         */
         private boolean findIfForumTypeIsValid(ForumType forumType,Gender gender, int age){
             switch (forumType) {
                 case Male:
@@ -168,7 +219,11 @@ import java.time.format.DateTimeFormatter;
             }
             return false;
         }
-
+        /**
+         * Unregisters a client from the gym.
+         * @param c The client to unregister.
+         * @throws ClientNotRegisteredException if the client is not found in the gym's client list.
+         */
     public void unregisterClient(Client c) throws ClientNotRegisteredException {
             if (!checkIfTheSameSecretary())return;
             findIfClientNotRegistered(c,gymClientList);
@@ -180,6 +235,13 @@ import java.time.format.DateTimeFormatter;
         addGymActions("Unregistered client: "+c.getPerson().getName());
 
     }
+
+        /**
+         * Checks if a client is registered in the client list.
+         * @param client The client to verify.
+         * @param clientArrayList The list of registered clients.
+         * @throws ClientNotRegisteredException if the client is not found.
+         */
         private void findIfClientNotRegistered(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
         for (Client value : clientArrayList) {
@@ -193,7 +255,12 @@ import java.time.format.DateTimeFormatter;
 
 
     }
-
+        /**
+         * Checks if a client is registered in the lesson list.
+         * @param client The client to verify.
+         * @param clientArrayList The list of registered clients for lessons.
+         * @throws ClientNotRegisteredException if the client is not found in the lesson list.
+         */
         private void findIfClientNotRegisteredToLesson(Client client , ArrayList<Client>clientArrayList) throws ClientNotRegisteredException {
             boolean registed =false;
             for (Client value : clientArrayList) {
@@ -204,9 +271,17 @@ import java.time.format.DateTimeFormatter;
             }
              if (!registed)throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons");//צריך לראות מה בדיוק צריך בהדפסות בכל פונקציה
 
-
-
         }
+
+        /**
+         * Adds a new session to the gym.
+         * @param sessionType The type of session.
+         * @param dateAndHour The date and time of the session.
+         * @param forumType The forum type of the session.
+         * @param instructor The instructor assigned to the session.
+         * @return The newly created session.
+         * @throws InstructorNotQualifiedException if the instructor is not qualified for the session type.
+         */
     public Session addSession(SessionType sessionType, String dateAndHour, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
             if (!checkIfTheSameSecretary())return null;
         findIfQualified(instructor.getSessionQualified(),sessionType);
@@ -216,7 +291,9 @@ import java.time.format.DateTimeFormatter;
         addGymActions("Created new session: "+ newsession.getSessionType() +" on "+newsession.getFormattedDateTime()+" with instructor: "+ newsession.getThisSessionInstructor().getInstructorPerson().getName());
         return newsession;
     }
-
+    /**
+     * Pays salaries to the secretary and instructors.
+     */
     public void paySalaries() {
 if (!checkIfTheSameSecretary())return;
         secretaryPerson.setBalance(secretaryPerson.getBalance()+getSalary());
@@ -228,13 +305,24 @@ if (!checkIfTheSameSecretary())return;
         }
         addGymActions("Salaries have been paid to all employees");
     }
+
+    /**
+     * Validates if the client's age meets gym requirements.
+     * @param age The age to validate.
+     * @throws InvalidAgeException if the age is below 18.
+     */
    private void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
             throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
 
         }
     }
-
+        /**
+         * Checks if an instructor is qualified to conduct a session type.
+         * @param sessionQualified The list of session types the instructor is qualified for.
+         * @param currentSessionType The session type to validate.
+         * @throws InstructorNotQualifiedException if the instructor is not qualified for the session type.
+         */
     private void findIfQualified(ArrayList<SessionType>sessionQualified, SessionType currentSessionType) throws InstructorNotQualifiedException {
         boolean isQualified = false;
         for (int i = 0; i < sessionQualified.size(); i++) {
@@ -246,6 +334,7 @@ if (!checkIfTheSameSecretary())return;
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
     }
+
     public void notify (Session s,String messege){//הודעות לרשומים לשיעור ספציפי
             if (!checkIfTheSameSecretary())return;
        for (Observer observer:s.getObserverClientsInCurrentClass()){
@@ -253,6 +342,7 @@ if (!checkIfTheSameSecretary())return;
        }
            addGymActions("A message was sent to everyone registered for session " + s.getSessionType() + " on " +s.getFormattedDateTime() + " : " + messege );
     }
+
         public void notify(String specificDay, String message) {
             if (!checkIfTheSameSecretary())return;
             // הגדרת פורמטים
@@ -277,7 +367,6 @@ if (!checkIfTheSameSecretary())return;
         }
 
 
-
         public void notify (String messege){//הודעות לכלל לקוחות המכון
             if (!checkIfTheSameSecretary())return;
         for (Observer observer : ObserverGymClientList){
@@ -296,6 +385,9 @@ if (!checkIfTheSameSecretary())return;
         observerArrayList.remove(observer);
         }
 
+        /**
+         * Prints all recorded gym actions.
+         */
         public void printActions() {
             if (!checkIfTheSameSecretary())return;
             for (int i = 0; i < gymActions.size(); i++) {
@@ -303,6 +395,11 @@ if (!checkIfTheSameSecretary())return;
             }
 
         }
+
+        /**
+         * Adds an action to the gym's activity log.
+         * @param action The action description.
+         */
         public void addGymActions(String action){
             if (!checkIfTheSameSecretary())return;
             gymActions.add(action);
@@ -339,9 +436,6 @@ if (!checkIfTheSameSecretary())return;
             return sessionList;
         }
 
-//        public Person getSecretaryPerson() {
-//            return secretaryPerson;
-//        }
 
         public void setGymClientList(ArrayList<Client> gymClientList) {
             if (!checkIfTheSameSecretary())return;
